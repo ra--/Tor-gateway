@@ -1,0 +1,21 @@
+diff -urN OpenWrt-ImageBuilder-x86-for-Linux-i686.orig/target/linux/x86/generic/profiles/torgw.mk OpenWrt-ImageBuilder-x86-for-Linux-i686/target/linux/x86/generic/profiles/torgw.mk
+--- OpenWrt-ImageBuilder-x86-for-Linux-i686.orig/target/linux/x86/generic/profiles/torgw.mk	1970-01-01 01:00:00.000000000 +0100
++++ OpenWrt-ImageBuilder-x86-for-Linux-i686/target/linux/x86/generic/profiles/torgw.mk	2012-03-06 08:27:46.000000000 +0100
+@@ -0,0 +1,17 @@
++#
++# FIXME copyright stuff
++#
++
++define Profile/torgw
++  NAME:=torgw
++  PACKAGES:=kmod-e1000 -dnsmasq -dropbear -ppp -kmod-ppp -kmod-pppoe \
++	    -ppp-mod-pppoe iptables iptables-mod-conntrack tor tor-geoip \
++	    dhcp-server iptables-mod-extra iptables-mod-nat-extra \
++	    iptables-utils -firewall kmod-ipt-nat-extra kmod-ipt-extra \
++	    libevent2
++endef
++
++define Profile/torgw/Description
++	Tor gateway
++endef
++$(eval $(call Profile,torgw))

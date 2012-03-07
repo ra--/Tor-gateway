@@ -1,0 +1,19 @@
+#!/bin/sh /etc/rc.common
+
+# iptables start/stop script
+
+
+START=45
+
+start() {
+	iptables-restore < /etc/iptables.conf
+}
+
+stop() {
+	iptables -P INPUT ACCEPT
+	iptables -P OUTPUT ACCEPT
+	iptables -F
+	iptables -F -t nat
+	iptables -X
+	iptables -X -t nat
+}

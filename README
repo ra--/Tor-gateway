@@ -1,0 +1,43 @@
+
+######################
+#   Tor gateway VM   #
+######################
+
+Table of contents:
+ (a) How to use
+ (b) build.sh
+ (c) patches
+ (d) overlay
+ (e) TODO
+ (f) LICENSE
+
+
+(a) How to use:
+Run the build.sh script explained below without any arguments. Take the resulting OVA file, import it in VirtualBox and you are ready to run the Tor gateway VM.
+
+ 
+(b) build.sh:
+This script creates the disk image for VirtualBox based on the OpenWRT ImageBuilder.
+It takes the following arguments:
+  -) disk	creates the OpenWRT disk image
+  -) vm		create the VirtualBox image (depends on the creation of the OpenWRT disk image)
+  -) clean	cleans all temporary and downloaded files
+If run without arguments it will create the disk image first and will then create the VirtualBox image.
+
+
+(c) patches:
+All files in this directory will be applied before running the OpenWRT image creation process.
+
+
+(d) overlay:
+At the end of the OpenWRT image creation process the content of this directory will be copied to the image directory structure and therefor add or overwrite files.
+
+
+(e) TODO:
+List of tasks that are known to be not implemented yet.
+
+
+(f) LICENSE:
+All code by this project is licensed under the GPLv2, if not stated otherwise.
+
+

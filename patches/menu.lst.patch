@@ -1,0 +1,23 @@
+diff -urN OpenWrt-ImageBuilder-x86-for-Linux-i686.orig/target/linux/x86/image/menu.lst OpenWrt-ImageBuilder-x86-for-Linux-i686/target/linux/x86/image/menu.lst
+--- OpenWrt-ImageBuilder-x86-for-Linux-i686.orig/target/linux/x86/image/menu.lst	2011-11-18 16:30:25.000000000 +0100
++++ OpenWrt-ImageBuilder-x86-for-Linux-i686/target/linux/x86/image/menu.lst	2012-03-06 08:27:47.000000000 +0100
+@@ -1,15 +1,8 @@
+-@SERIAL_CONFIG@
+-@TERMINAL_CONFIG@
+-
+ default 0
+-timeout 5
++timeout 0
++hiddenmenu
+ 
+-title   OpenWrt
++title   Tor gateway
+ root    (hd0,0)
+-kernel  /boot/vmlinuz @CMDLINE@ noinitrd reboot=bios
+-boot
+-
+-title	OpenWrt (failsafe)
+-root	(hd0,0)
+-kernel  /boot/vmlinuz failsafe=true @CMDLINE@ noinitrd reboot=bios
++kernel  /boot/vmlinuz root=/dev/sda2 rootfstype=ext2 rootwait noinitrd reboot=bios quiet
+ boot
