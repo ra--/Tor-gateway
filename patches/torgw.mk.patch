@@ -3,7 +3,7 @@ diff -urN OpenWrt-ImageBuilder-x86-for-Linux-i686.orig/target/linux/x86/generic/
 +++ OpenWrt-ImageBuilder-x86-for-Linux-i686/target/linux/x86/generic/profiles/torgw.mk	2012-03-06 08:27:46.000000000 +0100
 @@ -0,0 +1,17 @@
 +#
-+# FIXME copyright stuff
++# torgw profile by ra (2012), GPLv2
 +#
 +
 +define Profile/torgw
