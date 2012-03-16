@@ -1,5 +1,4 @@
 sometime:
--) update tor package
 -) add virtualbox modules to synchronize time (and remove rdate synchronization at boot)
 -) randomly choose dns servers instead of static /etc/resolv.conf
 -) include tor fast gateway scripts

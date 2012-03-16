@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Purpose: Build Tor gateway image and create VirtualBox VM
 # by ra (2012)
@@ -14,7 +14,8 @@ MD5SUM='c4f75b9f2350db7cfae0d5299688b8ff'
 
 VMDKFILE='bin/x86/openwrt-x86-generic-combined-ext2.vmdk'
 
-PROGS_NEEDED='which wget tar patch make VBoxManage rm echo'
+PROGS_NEEDED='which wget tar patch make VBoxManage rm echo svn cp'
+
 
 # check for needed programs
 for PROG in ${PROGS_NEEDED}; do
@@ -45,7 +46,7 @@ function cleanDir() {
 }
 
 
-function buildDisk() {
+function buildBuilder() {
   # download OpenWrt ImageBuilder
   if [ ! -e ${SCRIPTDIR}/${FILENAME} ]; then 
     wget ${FILEURL}${FILENAME} -O ${SCRIPTDIR}/${FILENAME}
@@ -88,7 +89,10 @@ function buildDisk() {
     done
     cd ${CWD} 
   fi
+}
 
+
+function buildDisk() {
   # build image
   CWD=`pwd` 
   cd ${SCRIPTDIR}/${FILEDIR}
@@ -124,6 +128,14 @@ function cleanOVA() {
   echo "Deleting ova file."
   echo
   rm -f "${SCRIPTDIR}/${NAME}.ova"
+}
+
+
+function cleanSource() {
+  echo
+  echo "Deleting source files."
+  echo
+  rm -rf "${SCRIPTDIR}/backfire_10.03.1"
 }
 
 
@@ -201,19 +213,115 @@ function createVM() {
 }
 
 
+# compile tor and tor-geoip packages
+function compileTor() {
+  cd ${SCRIPTDIR}
+
+  if [ ! -d backfire_10.03.1 ]; then
+    svn co svn://svn.openwrt.org/openwrt/tags/backfire_10.03.1/
+    if [ $? -ne 0 ]; then
+      echo
+      echo "ERROR: Checking out source code from SVN."
+      echo
+      exit 1
+    fi
+  fi
+
+  cd backfire_10.03.1
+
+  # update package feeds
+  ./scripts/feeds update -a
+  if [ $? -ne 0 ]; then
+    echo
+    echo "ERROR: Updating feeds."
+    echo
+    exit 1
+  fi
+
+
+  # update package feeds
+  ./scripts/feeds install -a
+  if [ $? -ne 0 ]; then
+    echo
+    echo "ERROR: Installing feeds."
+    echo
+    exit 1
+  fi
+
+
+  # copy config file
+  cp -ap ../OpenWrt-ImageBuilder-x86-for-Linux-i686/.config . 
+  if [ $? -ne 0 ]; then
+    echo
+    echo "ERROR: Copying config file."
+    echo
+    exit 1
+  fi
+
+
+  # build toolchain
+  make -j${BUILD_THREADS} prepare 
+  if [ $? -ne 0 ]; then
+    echo
+    echo "ERROR: Preparing OpenWRT build environment."
+    echo
+    exit 1
+  fi
+
+
+  # apply patches and ignore if already applied
+  for i in ../patches/source/*; do
+    patch -p1 -t -i ${i} 
+  done
+
+
+  # build tor and tor-geoip packages
+  make -j${BUILD_THREADS} package/tor/{clean,compile,install} 
+  if [ $? -ne 0 ]; then
+    echo
+    echo "ERROR: Compiling tor package."
+    echo
+    exit 1
+  fi
+
+
+  # copy tor and tor-geoip packages to ImageBuilder directory
+  cp ./bin/x86/packages/tor*_x86.ipk ../OpenWrt-ImageBuilder-x86-for-Linux-i686/packages/
+  if [ $? -ne 0 ]; then
+    echo
+    echo "ERROR: Copying tor package."
+    echo
+    exit 1
+  fi
+
+  cd .. 
+}
+
+
+
 if [ $# -eq 0 ]; then
+  buildBuilder
+  compileTor
   buildDisk
   createVM
+elif [ ${1} = 'builder' -a $# -eq 1 ]; then
+  buildBuilder
 elif [ ${1} = 'disk' -a $# -eq 1 ]; then
+  buildBuilder
+  compileTor
   buildDisk
 elif [ ${1} = 'vm' -a $# -eq 1 ]; then
   createVM
+elif [ ${1} = 'torpkg' -a $# -eq 1 ]; then
+  buildBuilder
+  compileTor
 elif [ ${1} = 'clean' -a $# -eq 1 ]; then
   cleanDir
   cleanFile
+  cleanSource
   cleanOVA
 else
-  echo "Usage: ${0} [disk|vm|clean]"
+  echo "Usage: ${0} [builder|disk|vm|torpkg|clean]"
   exit 1
 fi
 
