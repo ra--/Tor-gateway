@@ -16,6 +16,14 @@ VMDKFILE='bin/x86/openwrt-x86-generic-combined-ext2.vmdk'
 
 PROGS_NEEDED='which wget tar patch make VBoxManage rm echo svn cp'
 
+SCRIPTDIR=$(cd `dirname ${0}`; echo `pwd`)
+
+
+
+if [ "${UID}" -eq 0 ]; then
+  echo "ERROR: Do not run as root!"
+  exit 1
+fi
 
 # check for needed programs
 for PROG in ${PROGS_NEEDED}; do
@@ -26,8 +34,6 @@ for PROG in ${PROGS_NEEDED}; do
     exit 1
   fi
 done
-
-SCRIPTDIR=`dirname ${0}`
 
 
 function cleanFile() {
@@ -75,9 +81,8 @@ function buildBuilder() {
       cleanDir
       exit 1
     fi
-    CWD=`pwd` 
     cd ${SCRIPTDIR}/${FILEDIR}
-    for i in ../patches/*; do
+    for i in ../patches/imagebuilder/*; do
       patch -p1 -i ${i} 
       if [ $? -ne 0 ]; then
         echo
@@ -87,14 +92,13 @@ function buildBuilder() {
         exit 1
       fi
     done
-    cd ${CWD} 
+    cd ${SCRIPTDIR}
   fi
 }
 
 
 function buildDisk() {
   # build image
-  CWD=`pwd` 
   cd ${SCRIPTDIR}/${FILEDIR}
   make -j${BUILD_THREADS} image PROFILE="torgw" FILES="../overlay" 
   if [ $? -eq 0 ]; then
@@ -197,6 +201,13 @@ function createVM() {
   fi
   VBoxManage export "${NAME}" --output "${SCRIPTDIR}/${NAME}.ova" --vsys 0 \
   --version "${VERSION}" --vendor "ra" --vendorurl "https://ra.fnord.at/"
+  if [ $? -ne 0 ]; then
+    echo
+    echo "ERROR: Exporting VM."
+    echo
+    cleanVM
+    exit 1
+  fi
   echo
   echo
   echo "-----------------------------------------------------------------------------------"
@@ -207,8 +218,22 @@ function createVM() {
 
   # delete vm
   VBoxManage storagectl "${NAME}" --name  "IDE Controller" --remove
+  if [ $? -ne 0 ]; then
+    echo
+    echo "ERROR: Deleting storage controller from VM."
+    echo
+    cleanVM
+    exit 1
+  fi
   UUID=`VBoxManage showhdinfo ${SCRIPTDIR}/${FILEDIR}/${VMDKFILE} | egrep '^UUID:' | awk '{print $2}'`
   VBoxManage closemedium disk ${UUID} --delete
+  if [ $? -ne 0 ]; then
+    echo
+    echo "ERROR: Deleting disk from VM."
+    echo
+    cleanVM
+    exit 1
+  fi
   cleanVM
 }
 

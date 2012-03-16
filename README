@@ -25,7 +25,7 @@ If run without arguments it will create the disk image first and will then creat
 
 
 (c) patches:
-All files in this directory will be applied before running the OpenWRT image creation process.
+This directory contains two subdirectories "imagebuilder" and "source". All patches in the imagebuilder-directory will be applied before running the OpenWRT image creation process while the patches in the source-directory will be applied before compiling packages from source. 
 
 
 (d) overlay:
