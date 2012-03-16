@@ -17,11 +17,10 @@ Run the build.sh script explained below without any arguments. Take the resultin
 
  
 (b) build.sh:
-This script creates the disk image for VirtualBox based on the OpenWRT ImageBuilder.
+This script creates the disk image for VirtualBox based on the OpenWRT source code and OpenWRT ImageBuilder.
 It takes the following arguments:
-  -) disk	creates the OpenWRT disk image
-  -) vm		create the VirtualBox image (depends on the creation of the OpenWRT disk image)
   -) clean	cleans all temporary and downloaded files
+  -) help	shows the help
 If run without arguments it will create the disk image first and will then create the VirtualBox image.
 
 

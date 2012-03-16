@@ -298,30 +298,29 @@ function compileTor() {
 }
 
 
+function usage() {
+  echo "Usage: ${0} [clean|help]"
+  exit 1
+}
+
 
 if [ $# -eq 0 ]; then
   buildBuilder
   compileTor
   buildDisk
   createVM
-elif [ ${1} = 'builder' -a $# -eq 1 ]; then
-  buildBuilder
-elif [ ${1} = 'disk' -a $# -eq 1 ]; then
-  buildBuilder
-  compileTor
-  buildDisk
-elif [ ${1} = 'vm' -a $# -eq 1 ]; then
-  createVM
-elif [ ${1} = 'torpkg' -a $# -eq 1 ]; then
-  buildBuilder
-  compileTor
-elif [ ${1} = 'clean' -a $# -eq 1 ]; then
-  cleanDir
-  cleanFile
-  cleanSource
-  cleanOVA
+elif [ $# -eq 1 ]; then
+  if [ ${1} = 'clean' ]; then
+    cleanDir
+    cleanFile
+    cleanSource
+    cleanOVA
+  elif [ ${1} = 'help' ]; then
+    usage
+  else
+    ${1}
+  fi
 else
-  echo "Usage: ${0} [builder|disk|vm|torpkg|clean]"
-  exit 1
+  usage
 fi
 
