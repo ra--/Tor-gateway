@@ -7,3 +7,4 @@ before 1.0.0:
 
 sometime:
 -) rewrite build script
+-) make number of hops in circuit configureable (in tor fast gateway)
