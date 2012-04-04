@@ -1,11 +1,7 @@
-before 0.6.0:
--) add virtualbox modules to synchronize time
-
 before 1.0.0:
  -) randomly choose dns servers instead of static /etc/resolv.conf
  -) include tor fast gateway scripts
 
 sometime:
 -) rewrite build script
--) make number of hops in circuit configureable (in tor fast gateway)
--) make i2p reachable (possible?)
+-) make circuit length configureable to 2 or 3 in tor fast gateway
