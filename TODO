@@ -5,3 +5,6 @@ before 1.0.0:
 sometime:
 -) rewrite build script
 -) make circuit length configureable to 2 or 3 in tor fast gateway
+
+maybe:
+-) exclude tor nodes with certain country information (not same country as origin?) - ExcludeNodes {??} # for nodes without information - see https://www.maxmind.com/app/iso3166 for others.
