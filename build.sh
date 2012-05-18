@@ -3,7 +3,7 @@
 # Purpose: Build Tor gateway image and create VirtualBox VM
 # by ra (2012)
 
-VERSION="0.5.1"
+VERSION="0.5.2"
 NAME="Tor gateway ${VERSION}"
 BUILD_THREADS='3'
 
