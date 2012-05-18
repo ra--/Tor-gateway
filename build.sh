@@ -162,7 +162,7 @@ function createVM() {
   fi
   
   # configure vm
-  VBoxManage modifyvm "${NAME}" --memory "32" --boot1 "disk" --boot2 "none" \
+  VBoxManage modifyvm "${NAME}" --memory "48" --boot1 "disk" --boot2 "none" \
   --boot3 "none" --boot4 "none" --vram "1" --nic1 "nat" --nictype1 "82543GC" \
   --nic2 "intnet" --nictype2 "82543GC" --intnet2 "tor" --biosbootmenu "disabled" \
   --rtcuseutc "on" --clipboard "disabled"
