@@ -1,4 +1,5 @@
 before 1.0.0:
+ -) add more free dns servers and test currently used
  -) randomly choose dns servers instead of static /etc/resolv.conf
  -) include tor fast gateway scripts
 
