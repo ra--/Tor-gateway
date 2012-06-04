@@ -200,7 +200,7 @@ function createVM() {
     cleanOVA
   fi
   VBoxManage export "${NAME}" --output "${SCRIPTDIR}/${NAME}.ova" --vsys 0 \
-  --version "${VERSION}" --vendor "ra" --vendorurl "https://ra.fnord.at/"
+  --version "${VERSION}" --vendor "ra" --vendorurl "https://github.com/ra--/Tor-gateway"
   if [ $? -ne 0 ]; then
     echo
     echo "ERROR: Exporting VM."
