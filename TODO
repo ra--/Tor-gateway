@@ -1,3 +1,6 @@
+asap:
+-) update tor to latest version (0.2.2.36)
+
 before 1.0.0:
  -) add more free dns servers and test currently used
  -) randomly choose dns servers instead of static /etc/resolv.conf
