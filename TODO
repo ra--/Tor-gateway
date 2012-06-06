@@ -1,6 +1,3 @@
-asap:
--) update tor to latest version (0.2.2.36)
-
 before 1.0.0:
  -) include tor fast gateway scripts
 
