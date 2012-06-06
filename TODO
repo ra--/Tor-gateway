@@ -2,8 +2,6 @@ asap:
 -) update tor to latest version (0.2.2.36)
 
 before 1.0.0:
- -) add new/remove broken dns servers (add: 8.8.8.8 8.8.4.4 77.247.176.114 remove: 85.214.73.63 194.150.160.168)
- -) randomly choose dns servers instead of static /etc/resolv.conf
  -) include tor fast gateway scripts
 
 sometime:
@@ -11,4 +9,5 @@ sometime:
  -) make circuit length configureable to 2 or 3 in tor fast gateway
 
 maybe:
+ -) randomly choose dns servers instead of static /etc/resolv.conf (out of 8.8.8.8 8.8.4.4 77.247.176.114 204.152.184.76 213.73.91.35 80.237.196.2 194.95.202.198 )
  -) exclude tor nodes with certain country information (not same country as origin?) - ExcludeNodes {??} # for nodes without information - see https://www.maxmind.com/app/iso3166 for others.
