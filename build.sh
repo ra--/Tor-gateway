@@ -100,7 +100,7 @@ function buildBuilder() {
 function buildDisk() {
   # build image
   cd ${SCRIPTDIR}/${FILEDIR}
-  make -j${BUILD_THREADS} image PROFILE="torgw" FILES="../overlay" 
+  make ${DEBUG} -j${BUILD_THREADS} image PROFILE="torgw" FILES="../overlay" 
   if [ $? -eq 0 ]; then
     echo
     echo
@@ -285,7 +285,7 @@ function compileTor() {
 
 
   # build toolchain
-  make -j${BUILD_THREADS} prepare 
+  make ${DEBUG} -j${BUILD_THREADS} prepare 
   if [ $? -ne 0 ]; then
     echo
     echo "ERROR: Preparing OpenWRT build environment."
@@ -301,7 +301,7 @@ function compileTor() {
 
 
   # build tor and tor-geoip packages
-  make -j${BUILD_THREADS} package/tor/{clean,compile,install} 
+  make ${DEBUG} -j${BUILD_THREADS} package/tor/{clean,compile,install} 
   if [ $? -ne 0 ]; then
     echo
     echo "ERROR: Compiling tor package."
@@ -335,7 +335,14 @@ if [ $# -eq 0 ]; then
   buildDisk
   createVM
 elif [ $# -eq 1 ]; then
-  if [ ${1} = 'clean' ]; then
+  if [ ${1} = 'debug' ]; then
+    DEBUG='V=99'
+    BUILD_THREADS='1'
+    buildBuilder
+    compileTor
+    buildDisk
+    createVM
+  elif [ ${1} = 'clean' ]; then
     cleanDir
     cleanFile
     cleanSource
