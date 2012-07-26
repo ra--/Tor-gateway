@@ -165,7 +165,8 @@ function createVM() {
   VBoxManage modifyvm "${NAME}" --memory "48" --boot1 "disk" --boot2 "none" \
   --boot3 "none" --boot4 "none" --vram "1" --nic1 "nat" --nictype1 "82543GC" \
   --nic2 "intnet" --nictype2 "82543GC" --intnet2 "tor" --biosbootmenu "disabled" \
-  --rtcuseutc "on" --clipboard "disabled" --synthcpu "on"
+  --rtcuseutc "on" --clipboard "disabled" --synthcpu "on" --natdnsproxy1 "on" \
+  --natdnshostresolver1 "on"
   if [ $? -ne 0 ]; then
     echo
     echo "ERROR: Configuring VM."
